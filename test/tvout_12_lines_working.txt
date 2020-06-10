@@ -1,0 +1,185 @@
+// the first 2 bytes of every row are off screen, design choice to implement screen shake
+// PAL_OUTPUT_START can be used fos x axis shake
+// 51 bytes every row
+
+#include "RAM.h"
+#include "TvLib.h"
+#include "spec//asm_macros.h"
+
+
+#define beginTestClock TCCR0B |=  0b00000001;
+#define endTestClock TCCR0B &= 0b11111000;
+bool update = 0;
+float a = 0;
+
+// math
+ void swap(int &a, int &b)
+{
+  int temp = a;
+  a = b;
+  b = temp;
+  return;
+}
+
+  void plot(unsigned int x, unsigned int y)
+{
+   uint8_t data = RAM.read(7, 50*y + x / 8);
+   data |= (128 >> (x % 8));
+   RAM.write(7, data, 50*y + x / 8);
+   return;
+}
+
+void bresenham(int x1, int y1, int x2, int y2) 
+{ 
+   int dy = y2 - y1;
+   int dx = x2 - x1;
+   uint8_t delta;
+
+   if(abs(dx) > abs(dy))
+   {
+     
+     // only left to right lines
+     if(x1 > x2)
+     {
+        swap(x1, x2);
+        swap(y1, y2);
+        dx *= -1;
+        dy *= -1;
+     }
+        
+     int m_new = 2 * abs(dy); 
+     int slope_error_new = m_new - dx; 
+     
+     for (int x = x1 , y = y1; x <= x2; x++) 
+     { 
+        plot(x,y);
+    
+        // Add slope to increment angle formed 
+        slope_error_new += m_new; 
+    
+        // Slope error reached limit, time to 
+        // increment y and update slope error. 
+        if (slope_error_new >= 0) 
+        { 
+           dy > 0? y++ : y--; 
+           slope_error_new  -= 2 * dx; 
+        } 
+     } 
+   }
+   else
+   {
+     // only left to right lines
+     if(y1 > y2)
+     {
+        swap(x1, x2);
+        swap(y1, y2);
+        dy *= -1;
+        dx *= -1;
+     }
+        
+     int m_new = 2 * abs(dx); 
+     int slope_error_new = m_new - dy; 
+     
+     for (int y = y1 , x = x1; y <= y2; y++) 
+     { 
+        plot(x,y);
+    
+        // Add slope to increment angle formed 
+        slope_error_new += m_new; 
+    
+        // Slope error reached limit, time to 
+        // increment y and update slope error. 
+        if (slope_error_new >= 0) 
+        { 
+           dx > 0? x++ : x--; 
+           slope_error_new  -= 2 * dy; 
+        } 
+     } 
+   }
+   
+} 
+
+  
+void test()
+{
+  update = 1;
+  uint16_t pos = (line - 30) * 50;
+   // select slave by pulling SS low
+  PORT_RAM &= ~_BV(7);
+  
+  SPDR = READ;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+  // give the addr MSB first
+  SPDR = (uint8_t)(pos >> 8);
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+   SPDR = (uint8_t)(pos);
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+  
+  wait_until(PAL_OUTPUT_START);
+
+  //timing
+  __asm__ __volatile__ ("nop\n");
+  __asm__ __volatile__ ("nop\n");
+  // 50 byte stream
+  DDRD |= _BV(6);
+  beginTestClock
+  __asm__ __volatile__ ("delayRenderTime\n"); 
+ 
+  //endTestClock
+  DDRD &= ~_BV(6);
+      
+  // signal end transmittion by pulling ss low
+  PORT_RAM |= _BV(7);
+}
+
+void setup() 
+{
+  TV.start(); // must be at the beginning
+  
+  // reset register
+  // DO NOT TOUCH THIS STUPID MORON!
+  // THIS ISN'T FOR LINE TESTING BITCH!
+  TCCR0A = 0b01000011;
+  TCCR0B = 0b00001000;
+  OCR0A = 0;
+  
+  RAM.add(7, BYTE_MODE);
+  for(unsigned int j = 0; j < 290; j++)
+    for(unsigned int i = 0; i < 50; i++)
+        RAM.write(7, 0, 50*j + i);
+  unsigned int a = 100,b = 100,c = 190,d = 103;
+  
+  //bresenham(200, 150, 201, 151);
+
+  bresenham(200, 150, 400, 160);
+ // bresenham(200, 150, 400, 260);
+ // bresenham(200, 150, 0, 0);
+ // bresenham(200, 150, 400, 140);
+ // bresenham(200, 150, 0, 160);
+ // bresenham(200, 150, 210, 290);
+  //drawline(200, 150, 201, 151);
+  
+  //drawline(200, 150, 201, 151);
+  //drawline(200, 150, 201, 151);
+  
+  //drawline(200, 150, 201, 151);
+  //drawline(200, 150, 201, 151);
+
+  RAM.writeSr(7, SEQ_MODE);
+  TV.setRender(test);
+}
+
+void loop() 
+{
+ if(update)
+ {
+  
+    //_delay_us(1);
+  
+ }
+  
+
+}

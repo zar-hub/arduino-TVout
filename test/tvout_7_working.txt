@@ -1,0 +1,71 @@
+// the first 2 bytes of every row are off screen, design choice to implement screen shake
+// PAL_OUTPUT_START can be used fos x axis shake
+
+#include "RAM.h"
+#include "TvLib.h"
+#include "spec//asm_macros.h"
+
+
+#define beginTestClock TCCR0B |=  0b00000001;
+#define endTestClock TCCR0B &= 0b11111000;
+
+void test()
+{
+  uint8_t i;
+  wait_until(PAL_OUTPUT_START);
+  PORT_RAM &= ~_BV(7);
+
+      SPDR = READ;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+
+  // give the addr MSB first
+  SPDR = 0;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+  SPDR = 0;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+       
+      DDRD |= _BV(6);
+      beginTestClock
+
+      // 52 byte
+      __asm__ __volatile__ ("delayRenderTime\n");
+      
+      //endTestClock
+      DDRD &= ~_BV(6);
+         
+      
+   // signal end transmittion by pulling ss low
+   PORT_RAM |= _BV(7);
+}
+
+void setup() 
+{
+  // reset register
+  // DO NOT TOUCH THIS STUPID MORON!
+  // THIS ISN'T FOR LINE TESTING BITCH!
+  TCCR0A = 0b01000011;
+  TCCR0B = 0b00001000;
+  OCR0A = 0;
+  
+  
+  RAM.add(7, SEQ_MODE);
+  RAM.write(7, 0b11111111, 0);
+  RAM.write(7, 0b00000000, 1);
+  RAM.write(7, 0b11111111, 2);
+  RAM.write(7, 0b11010100, 3);
+  RAM.write(7, 0b11111111, 4);
+
+  for(int i = 5; i < 100; i++)
+     RAM.write(7, 0b11111101, i);
+     
+  TV.start();
+  TV.setRender(test);
+}
+
+void loop() 
+{
+
+}

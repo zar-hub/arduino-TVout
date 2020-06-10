@@ -1,0 +1,89 @@
+// the first 2 bytes of every row are off screen, design choice to implement screen shake
+// PAL_OUTPUT_START can be used fos x axis shake
+// 51 bytes every row
+
+#include "RAM.h"
+#include "TvLib.h"
+#include "spec//asm_macros.h"
+
+
+#define beginTestClock TCCR0B |=  0b00000001;
+#define endTestClock TCCR0B &= 0b11111000;
+
+
+  
+void test()
+{
+  uint16_t pos = (line - 30) * 50;
+   // select slave by pulling SS low
+  PORT_RAM &= ~_BV(7);
+  
+  SPDR = READ;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+  // give the addr MSB first
+  SPDR = (uint8_t)(pos >> 8);
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+   SPDR = (uint8_t)(pos);
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+  
+  wait_until(PAL_OUTPUT_START);
+  
+  // 50 byte stream
+  DDRD |= _BV(6);
+  beginTestClock
+  __asm__ __volatile__ ("delayRenderTime\n"); 
+ 
+  //endTestClock
+  DDRD &= ~_BV(6);
+      
+  // signal end transmittion by pulling ss low
+  PORT_RAM |= _BV(7);
+}
+
+
+void test01()
+{
+  uint8_t buff[14];
+  wait_until(PAL_OUTPUT_START);
+  RAM.read(7, buff, 14, 50);
+}
+
+
+void setup() 
+{
+  TV.start();
+  // reset register
+  // DO NOT TOUCH THIS STUPID MORON!
+  // THIS ISN'T FOR LINE TESTING BITCH!
+  TCCR0A = 0b01000011;
+  TCCR0B = 0b00001000;
+  OCR0A = 0;
+  //Serial.begin(9600);
+  
+  RAM.add(7, BYTE_MODE);
+
+  for(unsigned int j = 0; j < 290; j++)
+    for(unsigned int i = 0; i < 50; i++)
+    {
+      //Serial.println(50*j+i);
+     if(j % 2)
+        RAM.write(7, 0b00001111, 50*j + i);
+      else
+        RAM.write(7, 0000000000, 50*j + i);
+       
+    }
+ // Serial.end();
+    
+  RAM.writeSr(7, SEQ_MODE);
+  TV.setRender(test);
+ 
+  
+}
+
+void loop() 
+{
+
+}

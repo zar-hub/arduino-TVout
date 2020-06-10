@@ -1,0 +1,37 @@
+#include "RAM.h"
+#include "TvLib.h"
+
+#define N 18
+#define beginTestClock TCCR0B |=  0b00000001;
+#define endTestClock TCCR0B &= 0b11111000;
+
+
+void test01()
+{
+  uint8_t buff[N];
+  wait_until(PAL_OUTPUT_START);
+  RAM.read(7, buff, N, 0);
+}
+
+
+void setup() 
+{
+  // set test clock
+ 
+  
+   RAM.add(7, SEQ_MODE);
+  uint8_t buff[N];
+  for(int i = 0; i < N; i++)
+    buff[i] = 0b10100000;
+ 
+
+  RAM.write(7, buff, N, 0);
+  TV.start();
+  TV.setRender(test01);
+ 
+}
+
+void loop() 
+{
+  
+}

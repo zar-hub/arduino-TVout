@@ -1,0 +1,113 @@
+#include "RAM.h"
+#include "TvLib.h"
+
+#define beginTestClock TCCR0B |=  0b00000001;
+#define endTestClock TCCR0B &= 0b11111000;
+
+void test()
+{
+  wait_until(PAL_OUTPUT_START);
+  PORT_RAM &= ~_BV(7);
+
+      SPI.transfer(READ);
+      SPI.transfer16(0);
+      
+      SPDR = 0;
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+       
+      SPDR = 0;
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      
+      SPDR = 0;
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      
+      SPDR = 0;
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+
+   // signal end transmittion by pulling ss low
+   PORT_RAM |= _BV(7);
+}
+
+void setup() 
+{
+  //DDRD |= _BV(6);
+  // reset register
+  
+  TCCR0A = 0b01000011;
+  TCCR0B = 0b00001000;
+  OCR0A = 0;
+
+  RAM.add(7, BYTE_MODE);
+  RAM.write(7, 0b10000000, 0);
+  RAM.write(7, 0b10000000, 1);
+  RAM.write(7, 0b0100000, 2);
+  RAM.write(7, 0b00000000, 3);
+  RAM.writeSr(7, SEQ_MODE);
+  TV.start();
+  TV.setRender(test);
+}
+
+void loop() 
+{
+
+}
