@@ -3,7 +3,7 @@ Library for PAL signal communication to analog tv using arduino UNO.
 Schematics and PCB files included.
 
 ARDUINO UNO 
-13-------SPI CLK
+13-------SPI CLK\n
 11-------SPI SI
 10-------SYN
 7--------CS_0
