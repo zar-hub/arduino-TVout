@@ -1,0 +1,862 @@
+#include "RAM.h"
+#include "TvLib.h"
+
+#define beginTestClock TCCR0B |=  0b00000001;
+#define endTestClock TCCR0B &= 0b11111000;
+
+void test()
+{
+  uint8_t i;
+  wait_until(162);
+  PORT_RAM &= ~_BV(7);
+
+      SPDR = READ;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+
+  // give the addr MSB first
+  SPDR = 0;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+  SPDR = 0;
+  asm volatile("nop");
+  while (!(SPSR & _BV(SPIF)));
+       
+      DDRD |= _BV(6);
+      beginTestClock
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // one byte
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+
+      // do not touch, the last byte takes into account the delay of beginTestClock
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      asm volatile("nop");
+      
+      //endTestClock
+      DDRD &= ~_BV(6);
+         
+      
+   // signal end transmittion by pulling ss low
+   PORT_RAM |= _BV(7);
+}
+
+void setup() 
+{
+  // reset register
+  // DO NOT TOUCH THIS STUPID MORON!
+  // THIS ISN'T FOR LINE TESTING BITCH!
+  TCCR0A = 0b01000011;
+  TCCR0B = 0b00001000;
+  OCR0A = 0;
+ 
+  
+  RAM.add(7, SEQ_MODE);
+  RAM.write(7, 0b11111111, 0);
+  RAM.write(7, 0b00000101, 1);
+  RAM.write(7, 0b00000001, 2);
+  RAM.write(7, 0b01010100, 3);
+  RAM.write(7, 0b11111111, 4);
+  TV.start();
+  TV.setRender(test);
+}
+
+void loop() 
+{
+
+}

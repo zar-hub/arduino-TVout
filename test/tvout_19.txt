@@ -1,0 +1,213 @@
+// the first 2 bytes of every row are off screen, design choice to implement screen shake
+// PAL_OUTPUT_START can be used fos x axis shake
+// 51 bytes every row
+
+#include "RAM.h"
+#include "TvLib.h"
+#include "spec//asm_macros.h"
+
+
+#define beginTestClock TCCR0B |=  0b00000101;
+#define endTestClock TCCR0B &= 0b11111000;
+
+float a = 0;
+
+// math
+ void swap(int &a, int &b)
+{
+  int temp = a;
+  a = b;
+  b = temp;
+  return;
+}
+
+  void plot(unsigned int x, unsigned int y)
+{
+   uint8_t data = RAM.read(7, BYTE_PER_LINE*y + x / 8);
+   data |= (128 >> (x % 8));
+   RAM.write(7, data, BYTE_PER_LINE*y + x / 8);
+   return;
+}
+
+
+void bresenham(int x1, int y1, int x2, int y2) 
+{ 
+   int dy = y2 - y1;
+   int dx = x2 - x1;
+   uint8_t delta;
+
+   if(abs(dx) > abs(dy))
+   {
+     
+     // only left to right lines
+     if(x1 > x2)
+     {
+        swap(x1, x2);
+        swap(y1, y2);
+        dx *= -1;
+        dy *= -1;
+     }
+        
+     int m_new = 2 * abs(dy); 
+     int slope_error_new = m_new - dx; 
+     
+     for (int x = x1 , y = y1; x <= x2; x++) 
+     { 
+        plot(x,y);
+    
+        // Add slope to increment angle formed 
+        slope_error_new += m_new; 
+    
+        // Slope error reached limit, time to 
+        // increment y and update slope error. 
+        if (slope_error_new >= 0) 
+        { 
+           dy > 0? y++ : y--; 
+           slope_error_new  -= 2 * dx; 
+        } 
+     } 
+   }
+   else
+   {
+     // only left to right lines
+     if(y1 > y2)
+     {
+        swap(x1, x2);
+        swap(y1, y2);
+        dy *= -1;
+        dx *= -1;
+     }
+        
+     int m_new = 2 * abs(dx); 
+     int slope_error_new = m_new - dy; 
+     
+     for (int y = y1 , x = x1; y <= y2; y++) 
+     { 
+        plot(x,y);
+    
+        // Add slope to increment angle formed 
+        slope_error_new += m_new; 
+    
+        // Slope error reached limit, time to 
+        // increment y and update slope error. 
+        if (slope_error_new >= 0) 
+        { 
+           dx > 0? x++ : x--; 
+           slope_error_new  -= 2 * dy; 
+        } 
+     } 
+   }
+} 
+  
+void test()
+{
+  
+  if(line == PAL_START_RENDER + 1)
+  {
+    //start pixel clock 
+   
+    wait_until(177);
+    TCCR0A = 0b01000011;
+   
+  }
+ 
+  
+  if(line == PAL_END_RENDER)
+  {
+    
+    //endPixelClock 
+    TCCR0A = 0b00000011;
+    
+    // signal end transmittion by pulling ss low
+    PORT_RAM |= _BV(7);
+  }
+}
+
+void setup() 
+{
+  TV.start(); // must be at the beginning
+  
+  // reset register
+  // DO NOT TOUCH THIS STUPID MORON!
+  // THIS ISN'T FOR LINE TESTING BITCH!
+  DDRD |= _BV(6);
+  TCCR0A = 0b00000011;
+  TCCR0B = 0b00001001;
+  OCR0A = 0;
+  //Serial.begin(9600);
+  
+  RAM.add(7, BYTE_MODE);
+  uint8_t data;
+
+  for(unsigned int j = 0; j < 320; j++)
+  {
+   
+    for(unsigned int i = 0; i < BYTE_PER_LINE; i++)
+        RAM.write(7, 0, BYTE_PER_LINE*j + i);
+  }
+
+
+  //BORDERS
+  //xDim is in byte, yDim is in lines
+  // RECT, (left, top, width, height)
+  //MAXBORDERS (1,0, 50 ,290)
+  //VIEWPORT (2,1, 49 ,280)
+  //ABSMAX(1,0,<60,notlimited)
+
+  // the first line must be blank.
+  // can be drawn only if the first bit is 0
+ /* for(unsigned int j = 1; j < 300; j++)
+  {
+    switch(j % 8)
+    {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+        data = 0b01110000;
+        break;
+   
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        data = 0b00001111;
+        break;
+    }
+    for(unsigned int i = 0; i < 50; i++)
+        RAM.write(7, data, BYTE_PER_LINE*j + i);
+  }*/
+   bresenham(200, 150, 400, 160);
+  bresenham(200, 150, 400, 260);
+   bresenham(46, 150, 400, 260);
+    
+ // Serial.end()
+  RAM.writeSr(7, SEQ_MODE);
+  TV.setRender(test);
+  
+   
+  
+}
+
+void loop() 
+{
+  if(updateStuff)
+  {   
+   
+    // select slave by pulling SS low
+    PORT_RAM &= ~_BV(7);
+    __asm__ __volatile__ ("delayTransistor\n"); 
+    SPDR = READ;
+    asm volatile("nop");
+    while (!(SPSR & _BV(SPIF)));
+    // give the addr MSB first
+    SPDR = (uint8_t)(0);
+    asm volatile("nop");
+    while (!(SPSR & _BV(SPIF)));
+     SPDR = (uint8_t)(0);
+    asm volatile("nop");
+    while (!(SPSR & _BV(SPIF)));
+    
+    updateStuff = 0;
+  }
+}

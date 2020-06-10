@@ -1,0 +1,57 @@
+#include "RAM.h"
+
+//quality of life
+void nl(){
+  Serial.println();
+}
+void printf(int n)
+{
+  Serial.print(n);
+}
+
+
+void setup() 
+{
+  Serial.begin(9600);
+  
+  // 8 bit test
+  //int n;
+  //RAM.add(7, BYTE_MODE);
+  //for(int i = 0; i < 100; i++)
+  //{
+  //  RAM.write(RAM.getSlaveInfo(0).SS, i, i);
+  //  n = RAM.read(RAM.getSlaveInfo(0).SS, i);
+  //  Serial.print("Ram address: ");
+  //  printf(i);
+  //  Serial.print("   value: ");
+  //  printf(n);
+  //  nl();
+  //}
+
+  // buffer test
+  RAM.add(7, SEQ_MODE);
+
+  uint8_t buff[64], rec[64];
+  for(int i = 0; i < 64; i++){
+    buff[i] = 2 * i;
+    rec[i] = 0;
+  }
+    
+  RAM.write(RAM.getSlaveInfo(0).SS, buff, 32, 0);
+  RAM.read(RAM.getSlaveInfo(0).SS, rec, 32, 0);
+
+  for(int i = 0; i < 32; i++)
+  {
+    Serial.print("Ram address: ");
+    printf(i);
+    Serial.print("   value: ");
+    printf(rec[i]);
+    nl();
+  }
+  printf(RAM.readSr(RAM.getSlaveInfo(0).SS));
+}
+
+void loop() 
+{
+  
+}

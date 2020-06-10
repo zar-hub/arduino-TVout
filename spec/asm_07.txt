@@ -1,0 +1,96 @@
+#ifndef ASM_MACROS_H_INCLUDED
+#define ASM_MACROS_H_INCLUDED
+
+__asm__ __volatile__ (
+  // delay 9 clock cycles
+  ".macro delay9\n\t"
+	"nop\n\t"
+	"nop\n\t"
+	"nop\n\t"
+	"nop\n\t"
+	"nop\n\t"
+	"nop\n\t"
+	"nop\n\t"
+	"nop\n\t"
+	"nop\n\t"
+  ".endm\n"
+
+  // delay 16 clock cylces
+  ".macro delay16\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n\t"
+    "nop\n"
+  ".endm\n"
+
+  // delayRenderTime
+  ".macro delayRenderTime\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"//10
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"//20
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"//30
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"//40
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"
+	"delay16\n\t"//50
+	"delay9\n"//51
+  ".endm\n"
+
+); // end of delay macros
+
+
+#endif
